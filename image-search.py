@@ -1,6 +1,7 @@
 from googleapiclient.discovery import build
 import os
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()
 API_KEY = os.getenv("API")
@@ -18,17 +19,32 @@ def google_image_search(query, num_results):
     
     return result.get('items', [])
 
+def download_image(url, save_path):
+    try:
+        response = requests.get(url, stream=True)
+        if response.status_code == 200:
+            with open(save_path, 'wb') as f:
+                for chunk in response.iter_content(1024):
+                    f.write(chunk)
+
+            print(f"Image saved to {save_path}")
+        
+        else:
+            print(f"Failed to retriev image from {url}, Status code: {response.status_code}")
+    
+    except Exception as e:
+        print(f"Error occured while downloading {url}: {e}")
+
 query = "puppies"
 num_images = 3
 images = google_image_search(query, num_images)
 
+folder = "downloaded_images" # creating a folder to store images
+if not os.path.exists(folder):
+    os.makedirs(folder)
+
 for i, image in enumerate(images):
     print(f"Image {i+1}: {image['link']}")
-
-save_dir = "images"
-for i, image in enumerate(images):
-        try:
-            image.download(save_dir)
-            image.rename(f'image_{i+1}.jpg')  # Renaming for consistency
-        except Exception as e:
-            print(f"Failed to download image {i+1}: {e}")
+    
+    file_path = os.path.join(folder, f"image_{i+1}.jpg")
+    download_image(image['link'], file_path)
