@@ -1,14 +1,20 @@
 import pprint
 from googleapiclient.discovery import build
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+API_KEY = os.getenv("API")
+CSE_ID = os.getenv("CSE_ID")
 
 def main():
-    service = build("customsearch", "v1", developerKey="AIzaSyAhyV5S_wKK9ZkV12nV9ETyCiw1dNSdjJ4")
+    service = build("customsearch", "v1", developerKey=API_KEY)
 
     res = (
         service.cse()
         .list(
-            q="lectures",
-            cx="017576662512468239146:omuauf_lfve",
+            q = "lectures",
+            cx = CSE_ID,
         )
         .execute()
     )
