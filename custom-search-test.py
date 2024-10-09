@@ -13,7 +13,7 @@ def main():
     res = (
         service.cse()
         .list(
-            q = "lectures",
+            q = "puppies",
             cx = CSE_ID,
         )
         .execute()

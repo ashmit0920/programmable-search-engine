@@ -1,3 +1,4 @@
 .env
 downloaded_images/
 yolo-test.py
+yolov8s.pt

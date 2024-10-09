@@ -36,7 +36,7 @@ def download_image(url, save_path):
         print(f"Error occured while downloading {url}: {e}")
 
 query = "puppies"
-num_images = 3
+num_images = 5
 images = google_image_search(query, num_images)
 
 folder = "downloaded_images" # creating a folder to store images
